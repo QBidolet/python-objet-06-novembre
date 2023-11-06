@@ -27,3 +27,15 @@ users = {
 # assigner une valeur
 users["1"]["age"] = 55
 print(users)
+
+print('#' * 25)
+# for
+for element in users.keys():
+    print(element)
+
+for element in users.values():
+    print(element)
+
+print('#' * 25)
+for cle, valeur in users.items():
+    print(cle, valeur)
