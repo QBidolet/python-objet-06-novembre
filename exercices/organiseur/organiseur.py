@@ -28,17 +28,37 @@ folder_dict = {
     "EXE": [".exe"]
 }
 
+chemin_a_trier = os.path.join(os.getcwd(), "A TRIER")
+
 # listdir
-chemin = os.path.join(os.getcwd(), "A TRIER")
+# liste_fichiers = os.listdir(chemin_a_trier)
+# for fichier in liste_fichiers:
+#     _, extension = os.path.splitext(fichier)
+#     for cle, valeur in folder_dict.items():
+#         if extension in valeur:
+#             chemin_dossier = os.path.join(os.getcwd(), cle)
+#             os.makedirs(chemin_dossier, exist_ok=True)
+#             chemin_fichier = os.path.join(chemin_a_trier, fichier)
+#             shutil.copy2(chemin_fichier, chemin_dossier)
 
-for fichier in os.listdir(chemin):
-    nom, extension = os.path.splitext(fichier)
-    print(nom, extension)
-    for cle, valeur in folder_dict.items():
-        if extension in valeur:
-            print(f"Le dossier a crée est {cle}")
+# scandir
+# for element in os.scandir(chemin_a_trier):
+    # if element.is_file():
+    #     _, extension = os.path.splitext(element.name)
+    #     for nom_repertoire, liste_extension in folder_dict.items():
+    #         if extension in liste_extension:
+    #             chemin_dossier = os.path.join(os.getcwd(), nom_repertoire)
+    #             os.makedirs(chemin_dossier, exist_ok=True)
+    #             chemin_fichier = os.path.join(chemin_a_trier, element.name)
+    #             shutil.copy2(chemin_fichier, chemin_dossier)
 
-# méthode 2
-
-
-# méthode 3
+# os.walk
+for repertoire_en_cours, sous_repertoires, fichiers in os.walk(chemin_a_trier):
+    for fichier in fichiers:
+        _, extension = os.path.splitext(fichier)
+        for nom_repertoire, liste_extension in folder_dict.items():
+            if extension in liste_extension:
+                chemin_dossier = os.path.join(os.getcwd(), nom_repertoire)
+                os.makedirs(chemin_dossier, exist_ok=True)
+                chemin_fichier = os.path.join(chemin_a_trier, fichier)
+                shutil.move(chemin_fichier, chemin_dossier)
