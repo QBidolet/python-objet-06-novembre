@@ -11,3 +11,27 @@ Exemple :
 Utiliser le polymorphisme pour permettre à chaque type de véhicule de se déplacer.
 Stocker tous les véhicules dans une liste et créer une fonction pour déplacer tous les véhicules de la liste.
 """
+class Voiture:
+    def se_deplacer(self):
+        return "Une voiture roule sur la route."
+
+class Bateau:
+    def se_deplacer(self):
+        return "Un bateau navigue sur l'eau."
+
+class Avion:
+    def se_deplacer(self):
+        return "Un avion vole dans le ciel."
+
+def deplacer_vehicules(parc):
+    for vehicule in parc:
+        print(vehicule.se_deplacer())
+
+
+parc = []
+parc.append(Voiture())
+parc.append(Avion())
+parc.append(Bateau())
+
+deplacer_vehicules(parc)
+
