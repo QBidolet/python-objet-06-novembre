@@ -20,3 +20,5 @@ personne = Personne("BIDOLET", 15)
 print(personne.nom)
 personne.nom = "DUPONT"
 print(personne.nom)
+
+personne.nom = []
