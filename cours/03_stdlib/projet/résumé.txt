@@ -1,0 +1,29 @@
+Création d'un projet :
+- Création d'un répertoire (projet)
+
+Creation de la venv:
+- Avec Pycharm : File > Settings > Project
+> Interpreter > Add Interpreter > Add Local Interpreter >
+> ((Bien choisir la bonne version de Python)) > OK
+
+- Manuellement :
+ python -m venv venv
+ Activer la venv:
+ cd venv
+ cd Scripts
+ ./Activate (si vous êtes sur Windows)
+- Vérification : on cherche le (venv) en début de ligne.
+
+requirements.txt
+pip install pyinstaller
+pip freeze > requirements.txt
+pip install -r requirements.txt
+
+Créer un package:
+- Créer un dossier "mon_package"
+- Créer un fichier "__init__.py"
+- Créer des modules dans le packages
+
+Creer un .exe
+pyinstaller --onefile main.py
+Exécutable dans dist
