@@ -22,3 +22,5 @@ conn.commit()
 cursor.close()
 # Attention à bien Fermer la connexion
 conn.close()
+
+# ORM : SQLAlchemy
