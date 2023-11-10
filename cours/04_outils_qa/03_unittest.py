@@ -1,5 +1,6 @@
 import unittest
 from addition import addition
+
 class TestAddition(unittest.TestCase):
     def test_addition(self):
         """
@@ -12,4 +13,4 @@ class TestAddition(unittest.TestCase):
         """
         Test de la fonction addition avec des nombres négatifs.
         """
-        self.assertEquals(0, addition(-1, 1))
+        self.assertEqual(0, addition(-1, 1))
