@@ -33,20 +33,69 @@ Permettez à l'utilisateur de double-cliquer sur une tâche dans la Listbox pour
 Ouvrez une nouvelle fenêtre de dialogue pour l'édition.
 """
 
-from tkinter import Tk, Label, Entry, StringVar, Button, Listbox, END
+from tkinter import Tk, Label, Entry, StringVar, Button, Listbox, END, messagebox, TclError, Toplevel
+
+
 def ajouter_tache():
     tache = nom_tache_var.get()
     if tache:
         listbox_taches.insert(END, tache)
 
+
 def supprimer_tache():
-    pass
+    try:
+        index = listbox_taches.curselection()
+        listbox_taches.delete(index)
+    except (IndexError, TclError):
+        messagebox.showwarning("Attention", "Veuillez sélectionner une tâche.")
+
+
+def sauvegarder_modification(index, nouvelle_tache, fenetre):
+    listbox_taches.delete(index)
+    listbox_taches.insert(index, nouvelle_tache)
+    fenetre.destroy()
+
+
+def modifier_tache(event):
+    index = listbox_taches.curselection()
+    tache = listbox_taches.get(index)
+
+    # Nouvelle fenêtre pour éditer la tâche
+    edit_fenetre = Toplevel(fenetre)
+    edit_fenetre.title("Modifier Tâche")
+    modification_var = StringVar()
+    entry_modification = Entry(edit_fenetre, textvariable=modification_var)
+    entry_modification.pack()
+    modification_var.set(tache)
+    button_modification = Button(edit_fenetre,
+                                 text="Sauvegarder",
+                                 command=lambda:
+                                 sauvegarder_modification(index, modification_var.get(), edit_fenetre))
+    button_modification.pack()
+
+
+def charger_taches():
+    try:
+        with open("taches.txt", "r") as fichier:
+            for tache in fichier:
+                listbox_taches.insert(END, tache)
+    except FileNotFoundError:
+        pass
+
+
+def sauvegarder_taches():
+    with open("taches.txt", "w") as fichier:
+        taches = listbox_taches.get(0, END)
+        for tache in taches:
+            fichier.write(tache + "\n")
+    fenetre.destroy()
+
 
 def init():
     """
     Construction de la fenêtre.
     """
-    global nom_tache_var, listbox_taches
+    global nom_tache_var, listbox_taches, fenetre
 
     fenetre = Tk()
     fenetre.title("Gestionnaire de Tâches")
@@ -61,6 +110,7 @@ def init():
 
     listbox_taches = Listbox(fenetre)
     listbox_taches.pack()
+    listbox_taches.bind("<Double-1>", modifier_tache)
 
     button_ajouter = Button(fenetre, text="Ajouter", command=ajouter_tache)
     button_ajouter.pack()
@@ -68,6 +118,8 @@ def init():
     button_supprimer = Button(fenetre, text="Supprimer", command=supprimer_tache)
     button_supprimer.pack()
 
+    charger_taches()
+    fenetre.protocol("WM_DELETE_WINDOW", sauvegarder_taches)
     fenetre.mainloop()
 
 
