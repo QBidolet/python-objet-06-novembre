@@ -33,99 +33,41 @@ Permettez à l'utilisateur de double-cliquer sur une tâche dans la Listbox pour
 Ouvrez une nouvelle fenêtre de dialogue pour l'édition.
 """
 
-import tkinter as tk
-from tkinter import messagebox
-
-
-# Fonction pour ajouter une tâche
+from tkinter import Tk, Label, Entry, StringVar, Button, Listbox, END
 def ajouter_tache():
-    tache = entry_tache.get()
+    tache = nom_tache_var.get()
     if tache:
-        listbox_taches.insert(tk.END, tache)
-        entry_tache.delete(0, tk.END)
-    else:
-        messagebox.showwarning("Attention", "Vous devez entrer une tâche.")
+        listbox_taches.insert(END, tache)
 
-
-# Fonction pour supprimer une tâche sélectionnée
 def supprimer_tache():
-    try:
-        index = listbox_taches.curselection()[0]
-        listbox_taches.delete(index)
-    except IndexError:
-        messagebox.showwarning("Attention", "Vous devez sélectionner une tâche.")
+    pass
 
-
-# Fonction pour sauvegarder les tâches dans un fichier
-def sauvegarder_taches():
-    with open('taches.txt', 'w') as f:
-        taches = listbox_taches.get(0, tk.END)
-        for tache in taches:
-            f.write(tache + "\n")
-    fenetre.destroy()
-
-
-# Fonction pour charger les tâches à partir d'un fichier
-def charger_taches():
-    try:
-        with open('taches.txt', 'r') as f:
-            for tache in f:
-                listbox_taches.insert(tk.END, tache.strip())
-    except FileNotFoundError:
-        pass
-
-
-# Fonction pour modifier une tâche existante
-def modifier_tache(event):
-    try:
-        index = listbox_taches.curselection()[0]
-        tache = listbox_taches.get(index)
-
-        # Fenêtre de modification
-        edit_window = tk.Toplevel(fenetre)
-        edit_window.title("Modifier Tâche")
-        tk.Entry(edit_window, textvariable=nom_var).pack()
-        nom_var.set(tache)
-        tk.Button(edit_window, text="Sauvegarder",
-                  command=lambda: sauvegarder_modification(index, edit_window)).pack()
-
-    except IndexError:
-        pass
-
-
-# Fonction pour sauvegarder la modification d'une tâche
-def sauvegarder_modification(index, window):
-    nouvelle_tache = nom_var.get()
-    listbox_taches.delete(index)
-    listbox_taches.insert(index, nouvelle_tache)
-    window.destroy()
-
-
-# Initialisation de la fenêtre Tkinter
 def init():
-    global fenetre, entry_tache, listbox_taches, nom_var
+    """
+    Construction de la fenêtre.
+    """
+    global nom_tache_var, listbox_taches
 
-    fenetre = tk.Tk()
+    fenetre = Tk()
     fenetre.title("Gestionnaire de Tâches")
-    fenetre.geometry('300x300')
+    fenetre.geometry("400x400")
 
-    nom_var = tk.StringVar()
-    recherche_var = tk.StringVar()
+    label_titre = Label(fenetre, text="Tache : ")
+    label_titre.pack()
 
-    tk.Label(fenetre, text="Tâche :").pack()
-    entry_tache = tk.Entry(fenetre, textvariable=nom_var)
+    nom_tache_var = StringVar()
+    entry_tache = Entry(fenetre, textvariable=nom_tache_var)
     entry_tache.pack()
 
-    tk.Button(fenetre, text="Ajouter Tâche", command=ajouter_tache).pack()
-    tk.Button(fenetre, text="Supprimer Tâche", command=supprimer_tache).pack()
-
-    listbox_taches = tk.Listbox(fenetre)
+    listbox_taches = Listbox(fenetre)
     listbox_taches.pack()
 
-    listbox_taches.bind("<Double-1>", modifier_tache)
+    button_ajouter = Button(fenetre, text="Ajouter", command=ajouter_tache)
+    button_ajouter.pack()
 
-    charger_taches()
-    fenetre.protocol("WM_DELETE_WINDOW", sauvegarder_taches)
+    button_supprimer = Button(fenetre, text="Supprimer", command=supprimer_tache)
+    button_supprimer.pack()
+
     fenetre.mainloop()
 
 
